@@ -5,11 +5,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { setFilters, resetTasks, fetchTasks } from "@/store/taskSlice";
 import { useEffect, useRef, useState } from "react";
 import { AppDispatch, RootState } from "@/store";
-import styled from "styled-components";
+
+import {
+  FilterBar,
+  LeftSection,
+  RightSection,
+  StyledSearch,
+  StyledSelect,
+} from "./styles";
 
 const { Option } = Select;
 
-// const statuses = ["Pending", "In Progress", "Completed"];
 const statuses = [
   {
     label: "Done",
@@ -27,53 +33,17 @@ const statuses = [
 const priorities = ["Low", "Medium", "High"];
 const assignees = ["Alice", "Bob", "Charlie"];
 
-// Layout container
-const FilterBar = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
-  margin-bottom: 1rem;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: stretch;
-  }
-`;
-
-// Left = Search
-const LeftSection = styled.div`
-  flex: 1;
-  min-width: 250px;
-`;
-
-// Right = Filters
-const RightSection = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-
-  @media (max-width: 768px) {
-    justify-content: space-between;
-  }
-`;
-
-const StyledSelect = styled(Select)`
-  width: 150px;
-`;
-
-const StyledSearch = styled(Input.Search)`
-  width: 200px;
-`;
-
-export default function SearchFilterBar() {
+export default function SearchFilterBar({
+  isSearchable = true,
+}: {
+  isSearchable?: boolean;
+}) {
   const dispatch = useDispatch<AppDispatch>();
   const { filters } = useSelector((state: RootState) => state.tasks);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [status, setStatus] = useState("");
-  const [priority, setPriority] = useState("");
-  const [assignee, setAssignee] = useState("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [status, setStatus] = useState<string>("");
+  const [priority, setPriority] = useState<string>("");
+  const [assignee, setAssignee] = useState<string>("");
 
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -102,12 +72,14 @@ export default function SearchFilterBar() {
   return (
     <FilterBar>
       <LeftSection>
-        <StyledSearch
-          placeholder="Search tasks..."
-          allowClear
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+        {isSearchable && (
+          <StyledSearch
+            placeholder="Search tasks..."
+            allowClear
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        )}
       </LeftSection>
 
       <RightSection>

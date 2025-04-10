@@ -1,32 +1,11 @@
 import React from "react";
-import styled from "styled-components";
 import { Task } from "@/types/task";
+import { Cell, Row } from "./styles";
 
 type Props = {
   task: Task;
   onClick: () => void;
 };
-
-const Row = styled.tr`
-  cursor: pointer;
-  transition: background-color 0.2s;
-  &:hover {
-    background-color: #f7fafc;
-  }
-`;
-
-const Cell = styled.td`
-  padding: 0.5rem;
-  border: 1px solid #e5e7eb;
-  text-align: left;
-  word-break: break-word;
-  color: rgba(0, 0, 0, 0.87);
-
-  @media (max-width: 600px) {
-    padding: 0.4rem 0.3rem;
-    font-size: 0.875rem;
-  }
-`;
 
 export default function TaskRow({
   task,
@@ -57,10 +36,10 @@ export default function TaskRow({
                 return task.status;
               case "priority":
                 return task.priority;
-              case "duedate":
-                return task.duedate;
-              case "estimation_hours":
-                return task.estimation_hours;
+              case "dueDate":
+                return task.dueDate;
+              case "estimationHours":
+                return task.estimationHours;
               case "remarks":
                 return task.remarks;
               default:

@@ -6,8 +6,8 @@ export type Task = {
   assignee: string;
   status: string;
   priority: "Low" | "Medium" | "High";
-  duedate: string;
-  estimation_hours: number;
+  dueDate: string;
+  estimationHours: number;
   remarks: string;
   comments: string[]; // Display only
 };

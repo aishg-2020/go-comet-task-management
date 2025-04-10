@@ -1,7 +1,5 @@
 "use client";
 
-import { Provider } from "react-redux";
-import { store } from "@/store";
 import TaskTable from "@/components/TaskTable";
 import SearchFilterBar from "@/components/TaskTable/SearchFilterBar";
 import styled from "styled-components";
@@ -20,11 +18,9 @@ const PageContainer = styled.div`
 
 export default function TaskPage() {
   return (
-    <Provider store={store}>
-      <PageContainer>
-        <SearchFilterBar />
-        <TaskTable />
-      </PageContainer>
-    </Provider>
+    <PageContainer>
+      <SearchFilterBar />
+      <TaskTable />
+    </PageContainer>
   );
 }

@@ -35,10 +35,10 @@ export default function TaskDrawer({ taskId, onClose }: Props) {
               {task.priority}
             </Descriptions.Item>
             <Descriptions.Item label="Due Date">
-              {task.duedate}
+              {task.dueDate}
             </Descriptions.Item>
             <Descriptions.Item label="Estimation">
-              {task.estimation_hours} hrs
+              {task.estimationHours} hrs
             </Descriptions.Item>
             <Descriptions.Item label="Remarks">
               {task.remarks}

@@ -7,7 +7,7 @@ export const columnsMap: Record<string, string> = {
   assignee: "Assignee",
   status: "Status",
   priority: "Priority",
-  duedate: "Due Date",
-  estimation_hours: "Estimation",
+  dueDate: "Due Date",
+  estimationHours: "Estimation",
   remarks: "Remarks",
 };

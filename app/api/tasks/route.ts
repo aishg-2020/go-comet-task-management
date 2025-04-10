@@ -2,6 +2,10 @@
 import { NextResponse } from "next/server";
 import { tasks } from "@/lib/dummyTasks";
 
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const limit = parseInt(searchParams.get("limit") || "20");
@@ -38,6 +42,9 @@ export async function GET(request: Request) {
   }
 
   const paginated = data.slice(skip, skip + limit);
+
+  // Delay the response by 1 second
+  await delay(1000);
 
   return NextResponse.json({
     data: paginated,
