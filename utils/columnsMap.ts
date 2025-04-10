@@ -1,4 +1,3 @@
-// utils/columnsMap.ts
 export const columnsMap: Record<string, string> = {
   row_no: "#",
   name: "Name",

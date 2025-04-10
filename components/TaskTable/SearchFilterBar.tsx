@@ -70,7 +70,7 @@ export default function SearchFilterBar({
   }, [searchTerm, status, priority, assignee, filters.sort]);
 
   return (
-    <FilterBar>
+    <FilterBar data-testid="search-filter-bar">
       <LeftSection>
         {isSearchable && (
           <StyledSearch

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { fetchTasks, resetTasks } from "@/store/taskSlice";
-import { Spin, Typography } from "antd";
+import { Alert, Button, Spin, Typography } from "antd";
 import SearchFilterBar from "@/components/TaskTable/SearchFilterBar";
 import styled from "styled-components";
 import dayjs from "dayjs";
@@ -34,7 +34,9 @@ const { Title } = Typography;
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658"];
 
 export default function Dashboard() {
-  const { data, loading } = useSelector((state: RootState) => state.tasks);
+  const { data, loading, error } = useSelector(
+    (state: RootState) => state.tasks
+  );
 
   const [completedData, setCompletedData] = useState<any[]>([]);
   const [dueDateData, setDueDateData] = useState<any[]>([]);
@@ -98,80 +100,103 @@ export default function Dashboard() {
           <Spin size="large" />
         </SpinnerWrapper>
       ) : (
-        <Grid>
-          <ChartCard>
-            <Title level={5}>Completed per Day</Title>
-            {completedData.length === 0 ? (
-              <EmptyState>No data to display</EmptyState>
-            ) : (
-              <ResponsiveContainer width="100%" height={300}>
-                <AreaChart data={completedData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis />
-                  <Tooltip />
-                  <Area
-                    type="monotone"
-                    dataKey="count"
-                    stroke="#8884d8"
-                    fill="#8884d8"
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            )}
-          </ChartCard>
-          <ChartCard>
-            <Title level={5}>Due Date per Day</Title>
-            {dueDateData.length === 0 ? (
-              <EmptyState>No data to display</EmptyState>
-            ) : (
-              <ResponsiveContainer width="100%" height={300}>
-                <AreaChart data={dueDateData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis />
-                  <Tooltip />
-                  <Area
-                    type="monotone"
-                    dataKey="count"
-                    stroke="#82ca9d"
-                    fill="#82ca9d"
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            )}
-          </ChartCard>
+        <>
+          {error && (
+            <div
+              style={{
+                margin: "16px 0",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Alert
+                message="Error"
+                description={error}
+                type="error"
+                showIcon
+                style={{ flex: 1, marginRight: 8 }}
+              />
+              <Button onClick={() => dispatch(fetchTasks({}))} type="primary">
+                Retry
+              </Button>
+            </div>
+          )}
+          <Grid>
+            <ChartCard>
+              <Title level={5}>Completed per Day</Title>
+              {completedData.length === 0 ? (
+                <EmptyState>No data to display</EmptyState>
+              ) : (
+                <ResponsiveContainer width="100%" height={300}>
+                  <AreaChart data={completedData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" />
+                    <YAxis />
+                    <Tooltip />
+                    <Area
+                      type="monotone"
+                      dataKey="count"
+                      stroke="#8884d8"
+                      fill="#8884d8"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              )}
+            </ChartCard>
+            <ChartCard>
+              <Title level={5}>Due Date per Day</Title>
+              {dueDateData.length === 0 ? (
+                <EmptyState>No data to display</EmptyState>
+              ) : (
+                <ResponsiveContainer width="100%" height={300}>
+                  <AreaChart data={dueDateData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" />
+                    <YAxis />
+                    <Tooltip />
+                    <Area
+                      type="monotone"
+                      dataKey="count"
+                      stroke="#82ca9d"
+                      fill="#82ca9d"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              )}
+            </ChartCard>
 
-          <FullWidthCard>
-            <Title level={5}>Estimation Hours</Title>
-            {estimationPie.every((d) => d.value === 0) ? (
-              <EmptyState>No data to display</EmptyState>
-            ) : (
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
-                    data={estimationPie}
-                    dataKey="value"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={100}
-                    label
-                  >
-                    {estimationPie.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
-            )}
-          </FullWidthCard>
-        </Grid>
+            <FullWidthCard>
+              <Title level={5}>Estimation Hours</Title>
+              {estimationPie.every((d) => d.value === 0) ? (
+                <EmptyState>No data to display</EmptyState>
+              ) : (
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={estimationPie}
+                      dataKey="value"
+                      nameKey="name"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={100}
+                      label
+                    >
+                      {estimationPie.map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={COLORS[index % COLORS.length]}
+                        />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              )}
+            </FullWidthCard>
+          </Grid>
+        </>
       )}
     </>
   );

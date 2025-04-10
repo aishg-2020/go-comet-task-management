@@ -1,4 +1,3 @@
-// store/taskSlice.ts
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Task } from "@/types/task";
 
@@ -34,7 +33,7 @@ export const fetchTasks = createAsyncThunk(
   "tasks/fetchTasks",
   async (
     { skip = 0, limit = 20 }: { skip?: number; limit?: number },
-    { getState }
+    { getState, rejectWithValue }
   ) => {
     const state = getState() as { tasks: State };
     const { search, status, assignee, priority, sort } = state.tasks.filters;
@@ -50,6 +49,13 @@ export const fetchTasks = createAsyncThunk(
     });
 
     const res = await fetch(`/api/tasks?${params.toString()}`);
+
+    if (!res.ok) {
+      const error = await res.json();
+      // Use rejectWithValue to pass a custom error message to the rejected action
+      return rejectWithValue(error.message || "Failed to fetch tasks");
+    }
+
     return await res.json();
   }
 );
@@ -78,7 +84,11 @@ const taskSlice = createSlice({
       })
       .addCase(fetchTasks.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || "Error fetching tasks";
+
+        state.error =
+          (typeof action.payload === "string" && action.payload) ||
+          action.error.message ||
+          "Error fetching tasks";
       });
   },
 });

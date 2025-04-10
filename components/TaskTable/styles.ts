@@ -38,12 +38,17 @@ export const StyledSearch = styled(Input.Search)`
   width: 200px;
 `;
 export const TableWrapper = styled.div`
+  width: 100%;
+`;
+
+export const ScrollContainer = styled.div`
   overflow-x: auto;
   width: 100%;
 `;
+
 export const Table = styled.table`
   width: 100%;
-  min-width: 900px; // Forces horizontal scroll when needed
+  min-width: 900px;
   border-collapse: collapse;
   border: 1px solid #e5e7eb;
   background-color: #fff;

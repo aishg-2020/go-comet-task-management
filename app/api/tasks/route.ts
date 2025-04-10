@@ -8,6 +8,16 @@ function delay(ms: number) {
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
+  const fail = searchParams.get("fail");
+
+  // Simulate error if fail=true
+  if (fail === "true") {
+    return NextResponse.json(
+      { message: "Something went wrong while fetching tasks." },
+      { status: 500 }
+    );
+  }
+
   const limit = parseInt(searchParams.get("limit") || "20");
   const skip = parseInt(searchParams.get("skip") || "0");
   const search = searchParams.get("search")?.toLowerCase();
@@ -43,7 +53,6 @@ export async function GET(request: Request) {
 
   const paginated = data.slice(skip, skip + limit);
 
-  // Delay the response by 1 second
   await delay(1000);
 
   return NextResponse.json({

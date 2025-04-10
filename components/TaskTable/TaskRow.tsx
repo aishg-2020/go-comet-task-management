@@ -16,10 +16,27 @@ export default function TaskRow({
   onClick: () => void;
   visibleColumns: string[];
 }) {
+  const handleRowKeyPress = (
+    e: React.KeyboardEvent<HTMLTableRowElement>,
+    item: Task
+  ) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onClick();
+    }
+  };
+
   return (
-    <Row onClick={onClick}>
+    <Row
+      onClick={onClick}
+      tabIndex={0}
+      role="row"
+      onKeyDown={(e) => handleRowKeyPress(e, task)}
+      aria-label={`View details for ${task?.name}`}
+      aria-describedby={`${task?.id}`}
+    >
       {visibleColumns.map((col) => (
-        <Cell key={col}>
+        <Cell key={col} role="cell">
           {(() => {
             switch (col) {
               case "row_no":

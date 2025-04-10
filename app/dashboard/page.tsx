@@ -18,7 +18,7 @@ const PageContainer = styled.div`
 
 export default function DashboardPage() {
   return (
-    <PageContainer>
+    <PageContainer data-testid="dashboard-page">
       <SearchFilterBar isSearchable={false} />
       <Dashboard />
     </PageContainer>
