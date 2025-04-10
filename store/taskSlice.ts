@@ -52,7 +52,7 @@ export const fetchTasks = createAsyncThunk(
 
     if (!res.ok) {
       const error = await res.json();
-      // Use rejectWithValue to pass a custom error message to the rejected action
+
       return rejectWithValue(error.message || "Failed to fetch tasks");
     }
 

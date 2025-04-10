@@ -90,7 +90,7 @@ export default function TaskTable() {
     return () => {
       dispatch(resetTasks());
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <TableWrapper>
@@ -146,9 +146,9 @@ export default function TaskTable() {
           </Thead>
 
           <tbody>
-            {data.map((task) => (
+            {data.map((task, index) => (
               <TaskRow
-                key={task.id}
+                key={`${task.id}-${index}`}
                 task={task}
                 visibleColumns={visibleColumns}
                 onClick={() => setSelected(task.id)}

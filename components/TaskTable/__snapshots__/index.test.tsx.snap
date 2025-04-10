@@ -50,15 +50,19 @@ exports[`TaskTable matches snapshot 1`] = `
     >
       <table
         class="sc-f9ebd397-7 UtqsH"
+        role="table"
       >
         <thead
           class="sc-f9ebd397-8 qFTfY"
         >
           <tr
             data-testid="task-table-header"
+            role="row"
           >
             <th
               class="sc-f9ebd397-9 iRMAQk"
+              role="columnheader"
+              scope="col"
             >
               Name 
               <span
@@ -69,6 +73,8 @@ exports[`TaskTable matches snapshot 1`] = `
             </th>
             <th
               class="sc-f9ebd397-9 iRMAQk"
+              role="columnheader"
+              scope="col"
             >
               Assignee 
               <span
@@ -79,6 +85,8 @@ exports[`TaskTable matches snapshot 1`] = `
             </th>
             <th
               class="sc-f9ebd397-9 iRMAQk"
+              role="columnheader"
+              scope="col"
             >
               Status 
               <span

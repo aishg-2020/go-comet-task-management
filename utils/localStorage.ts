@@ -1,6 +1,5 @@
 import { columnsMap } from "./columnsMap";
 
-// utils/localStorage.ts
 export function saveColumnConfig(config: string[]) {
   localStorage.setItem("task_column_config", JSON.stringify(config));
 }

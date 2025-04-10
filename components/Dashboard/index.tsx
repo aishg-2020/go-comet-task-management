@@ -91,7 +91,7 @@ export default function Dashboard() {
     return () => {
       dispatch(resetTasks());
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

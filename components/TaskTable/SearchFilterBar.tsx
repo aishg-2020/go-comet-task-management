@@ -67,7 +67,7 @@ export default function SearchFilterBar({
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
-  }, [searchTerm, status, priority, assignee, filters.sort]);
+  }, [searchTerm, status, priority, assignee, filters.sort, dispatch]);
 
   return (
     <FilterBar data-testid="search-filter-bar">

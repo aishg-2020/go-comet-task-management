@@ -21,25 +21,31 @@ jest.mock("@/utils/localStorage", () => ({
   loadColumnConfig: jest.fn(() => ["name", "assignee", "status"]),
 }));
 
-jest.mock("@/components/TaskTable/TaskRow", () => (props: any) => (
-  <tr data-testid="task-row" onClick={props.onClick}>
-    <td>Mock TaskRow for {props.task.name}</td>
-  </tr>
-));
+jest.mock("@/components/TaskTable/TaskRow", () => {
+  const MockTaskRow = (props: any) => (
+    <tr data-testid="task-row" onClick={props.onClick}>
+      <td>Mock TaskRow for {props.task.name}</td>
+    </tr>
+  );
+  MockTaskRow.displayName = "MockTaskRow";
+  return MockTaskRow;
+});
 
-jest.mock(
-  "@/components/TaskTable/EditColumnsModal/EditColumnsModal",
-  () => (props: any) =>
+jest.mock("@/components/TaskTable/EditColumnsModal/EditColumnsModal", () => {
+  const MockEditColumnsModal = (props: any) =>
     props.open ? (
       <div data-testid="edit-columns-modal">Edit Columns Modal</div>
-    ) : null
-);
+    ) : null;
+  MockEditColumnsModal.displayName = "MockEditColumnsModal";
+  return MockEditColumnsModal;
+});
 
-jest.mock(
-  "@/components/TaskTable/TaskDrawer",
-  () => (props: any) =>
-    props.taskId ? <div data-testid="task-drawer">Task Drawer</div> : null
-);
+jest.mock("@/components/TaskTable/TaskDrawer", () => {
+  const MockTaskDrawer = (props: any) =>
+    props.taskId ? <div data-testid="task-drawer">Task Drawer</div> : null;
+  MockTaskDrawer.displayName = "MockTaskDrawer";
+  return MockTaskDrawer;
+});
 
 describe("TaskTable", () => {
   beforeEach(() => {

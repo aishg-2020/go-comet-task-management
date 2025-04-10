@@ -1,4 +1,3 @@
-// app/api/tasks/route.ts
 import { NextResponse } from "next/server";
 import { tasks } from "@/lib/dummyTasks";
 

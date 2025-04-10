@@ -3,7 +3,6 @@ import { screen } from "@testing-library/react";
 import TaskPage from "./page";
 import { renderWithRedux } from "@/test-utils";
 
-// Mock child components (they’ll still expect Redux context)
 jest.mock("@/components/TaskTable/SearchFilterBar", () => ({
   __esModule: true,
   default: () => <div data-testid="search-filter-bar">SearchFilterBar</div>,

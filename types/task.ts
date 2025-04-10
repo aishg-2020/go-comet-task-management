@@ -9,5 +9,5 @@ export type Task = {
   dueDate: string;
   estimationHours: number;
   remarks: string;
-  comments: string[]; // Display only
+  comments: string[];
 };
