@@ -1,4 +1,4 @@
-import { Reorder } from "motion/react";
+import { Reorder } from "framer-motion";
 import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
