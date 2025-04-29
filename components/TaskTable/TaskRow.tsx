@@ -15,6 +15,7 @@ export default function TaskRow({
   task: Task;
   onClick: () => void;
   visibleColumns: string[];
+  style?: any;
 }) {
   const handleRowKeyPress = (
     e: React.KeyboardEvent<HTMLTableRowElement>,

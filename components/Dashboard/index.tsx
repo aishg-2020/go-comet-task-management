@@ -4,12 +4,19 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { fetchTasks, resetTasks } from "@/store/taskSlice";
-import { Alert, Button, Spin, Typography } from "antd";
-import SearchFilterBar from "@/components/TaskTable/SearchFilterBar";
-import styled from "styled-components";
+import { Typography } from "antd";
 import dayjs from "dayjs";
+const Spin = dynamic(() => import("antd/lib/spin"));
+const Alert = dynamic(() => import("antd/lib/alert"));
+const Button = dynamic(() => import("antd/lib/button"));
+
+const ResponsiveContainer = dynamic(() =>
+  import("recharts").then((mod) => mod.ResponsiveContainer)
+);
+const AreaChart = dynamic(() =>
+  import("recharts").then((mod) => mod.AreaChart)
+);
 import {
-  AreaChart,
   Area,
   XAxis,
   YAxis,
@@ -19,7 +26,6 @@ import {
   Pie,
   Cell,
   Legend,
-  ResponsiveContainer,
 } from "recharts";
 import {
   ChartCard,
@@ -28,20 +34,21 @@ import {
   Grid,
   SpinnerWrapper,
 } from "./styles";
+import dynamic from "next/dynamic";
 
 const { Title } = Typography;
-
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658"];
 
 export default function Dashboard() {
   const { data, loading, error } = useSelector(
     (state: RootState) => state.tasks
   );
+  const dispatch = useDispatch<AppDispatch>();
 
   const [completedData, setCompletedData] = useState<any[]>([]);
   const [dueDateData, setDueDateData] = useState<any[]>([]);
   const [estimationPie, setEstimationPie] = useState<any[]>([]);
-  const dispatch = useDispatch<AppDispatch>();
+
   useEffect(() => {
     const completedMap: Record<string, number> = {};
     const dueDateMap: Record<string, number> = {};
@@ -122,6 +129,7 @@ export default function Dashboard() {
               </Button>
             </div>
           )}
+
           <Grid>
             <ChartCard>
               <Title level={5}>Completed per Day</Title>
@@ -144,6 +152,7 @@ export default function Dashboard() {
                 </ResponsiveContainer>
               )}
             </ChartCard>
+
             <ChartCard>
               <Title level={5}>Due Date per Day</Title>
               {dueDateData.length === 0 ? (

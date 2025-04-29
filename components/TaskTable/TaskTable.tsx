@@ -1,4 +1,5 @@
 "use client";
+const ROW_HEIGHT = 56;
 
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -51,6 +52,17 @@ export default function TaskTable() {
   const [visibleColumns, setVisibleColumns] = useState<string[]>([]);
   const observerRef = useRef<HTMLDivElement>(null);
   const skip = data.length;
+  const [scrollTop, setScrollTop] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [visibleHeight, setVisibleHeight] = useState(0);
+
+  const totalHeight = data.length * ROW_HEIGHT;
+  const startIndex = Math.floor(scrollTop / ROW_HEIGHT);
+  const visibleCount = Math.ceil(visibleHeight / ROW_HEIGHT);
+  const endIndex = Math.min(data.length, startIndex + visibleCount + 5);
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    setScrollTop(e.currentTarget.scrollTop);
+  };
 
   useEffect(() => {
     const savedCols = loadColumnConfig();
@@ -87,6 +99,22 @@ export default function TaskTable() {
     if (observerRef.current) observer.observe(observerRef.current);
     return () => observer.disconnect();
   }, [data.length, total, skip, loading, dispatch]);
+  useEffect(() => {
+    const observer = new ResizeObserver(() => {
+      if (containerRef.current) {
+        setVisibleHeight(containerRef.current.clientHeight);
+      }
+    });
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    // Clean up observer on component unmount
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -126,7 +154,11 @@ export default function TaskTable() {
           </Button>
         </div>
       )}
-      <ScrollContainer>
+      <ScrollContainer
+        ref={containerRef}
+        onScroll={handleScroll}
+        style={{ maxHeight: visibleHeight, overflowY: "auto" }}
+      >
         <Table role="table">
           <Thead>
             <tr data-testid="task-table-header" role="row">
@@ -147,13 +179,21 @@ export default function TaskTable() {
             </tr>
           </Thead>
 
-          <tbody>
-            {data.map((task, index) => (
+          <tbody style={{ position: "relative", height: totalHeight }}>
+            <tr style={{ height: startIndex * ROW_HEIGHT }} />
+            {data.slice(startIndex, endIndex).map((task, index) => (
               <TaskRow
-                key={`${task.id}-${index}`}
+                key={`${task.id}-${startIndex + index}`}
                 task={task}
                 visibleColumns={visibleColumns}
                 onClick={() => setSelected(task.id)}
+                style={{
+                  position: "absolute",
+                  top: (startIndex + index) * ROW_HEIGHT,
+                  left: 0,
+                  right: 0,
+                  height: ROW_HEIGHT,
+                }}
               />
             ))}
           </tbody>
